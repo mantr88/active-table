@@ -1,5 +1,11 @@
+import AccountsTable from "../components/AccountsTable";
+
 function Accounts() {
-  return <div>Accounts</div>;
+  return (
+    <div>
+      <AccountsTable />
+    </div>
+  );
 }
 
 export default Accounts;
