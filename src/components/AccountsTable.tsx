@@ -4,9 +4,13 @@ import { accountsData } from "../fakeApi";
 import { IAccount } from "../Types/accountTypes";
 import Loader from "../ui/Loader";
 import "../AppLoyout.css";
+import Pagination from "../ui/Pagination/Pagination";
 
 function AccountsTable() {
   const [accounts, setAccounts] = useState<IAccount[]>([]);
+  // const [visibleItems, setvisibleItems] = useState(10);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [rowsPerPage] = useState(10);
   const location = useLocation();
 
   useEffect(() => {
@@ -18,6 +22,14 @@ function AccountsTable() {
       clearTimeout(idTimeout);
     };
   }, []);
+
+  const clickBtnLoadMoreHandler = () => {
+    setvisibleItems((pervState) => pervState + 10);
+  };
+
+  const indexOfLastRow = currentPage * rowsPerPage;
+  const indexOfFirstRow = indexOfLastRow - rowsPerPage;
+  const currentRows = accounts.slice(indexOfFirstRow, indexOfLastRow);
 
   return (
     <div>
@@ -33,7 +45,7 @@ function AccountsTable() {
             </tr>
           </thead>
           <tbody>
-            {accounts.map((item: IAccount): ReactElement<[]> => {
+            {currentRows.map((item: IAccount): ReactElement<[]> => {
               return (
                 <NavLink
                   className="link"
@@ -51,6 +63,14 @@ function AccountsTable() {
             })}
           </tbody>
         </table>
+        <Pagination
+          clickHandler={clickBtnLoadMoreHandler}
+          rowsPerPage={rowsPerPage}
+          totalRows={accounts.length}
+        />
+        <button type="button" onClick={clickBtnLoadMoreHandler}>
+          Load more
+        </button>
       </div>
       {accounts.length === 0 && <Loader />}
     </div>
