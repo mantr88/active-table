@@ -1,5 +1,11 @@
+import ProfilesTable from "../components/ProfilesTable";
+
 function Profiles() {
-  return <div>Profiles</div>;
+  return (
+    <div>
+      <ProfilesTable />
+    </div>
+  );
 }
 
 export default Profiles;
