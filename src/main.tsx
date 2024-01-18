@@ -6,6 +6,7 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Accounts from "./pages/Accounts.tsx";
 import Profiles from "./pages/Profiles.tsx";
 import Campaigns from "./pages/Campaigns.tsx";
+import OneCampaign from "./pages/OneCampaign.tsx";
 
 const router = createBrowserRouter([
   {
@@ -20,6 +21,10 @@ const router = createBrowserRouter([
       {
         path: "/active-table/campaigns",
         element: <Campaigns />,
+      },
+      {
+        path: "/active-table/:campaignId",
+        element: <OneCampaign />,
       },
     ],
   },

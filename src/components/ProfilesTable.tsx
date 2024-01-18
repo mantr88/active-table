@@ -1,4 +1,4 @@
-import { ReactElement, useEffect, useState } from "react";
+import { ReactElement, useEffect, useRef, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { profilesData } from "../fakeApi";
 import { IProfile } from "../Types/profileTypes";
@@ -6,14 +6,16 @@ import Loader from "../ui/Loader";
 import "../AppLoyout.css";
 import { BackLink } from "../ui/BackLink";
 import Pagination from "../ui/Pagination/Pagination";
+import getTargetId from "../helpers/getTargetId";
 
 function ProfilesTable() {
   const [profiles, setProfiles] = useState<IProfile[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage] = useState(10);
   const location = useLocation();
-  const backlinkRef = location.state?.from ?? "/active-table/";
-  const targetAccountId = location.state?.accountId;
+  const backlinkRef = useRef(location.state?.from ?? "/active-table/");
+  const id = location.state?.accountId;
+  const targetAccountId = getTargetId(id, "accountId");
 
   useEffect(() => {
     const idTimeout: number = setTimeout(() => {
@@ -41,7 +43,7 @@ function ProfilesTable() {
 
   return (
     <div>
-      <BackLink to={backlinkRef}>Back to accounts</BackLink>
+      <BackLink to={backlinkRef.current}>Back to accounts</BackLink>
       <h2>Profiles Table</h2>
       <div className="table-wrapper">
         <table className="fl-table">
@@ -60,7 +62,7 @@ function ProfilesTable() {
                     key={item.profileId}
                     className="link"
                     to="/active-table/campaigns"
-                    state={{ location, profileId: item.profileId }}
+                    state={{ from: location, profileId: item.profileId }}
                   >
                     <tr key={item.profileId}>
                       <td>{item.profileId}</td>

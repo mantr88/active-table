@@ -1,20 +1,21 @@
-import { IOneCampaign } from "../Types/oneCampaignTypes";
-import "../AppLoyout.css";
 import { useEffect, useState } from "react";
+import { useLocation, useParams } from "react-router-dom";
+import { IOneCampaign } from "../Types/oneCampaignTypes";
 import { campaignDescription } from "../fakeApi";
 import Loader from "../ui/Loader";
+import "../AppLoyout.css";
+import { BackLink } from "../ui/BackLink";
 
-interface IOneCampProps {
-  campaignId: string;
-}
-
-function OneCompaignTable({ campaignId }: IOneCampProps) {
+function OneCompaignTable() {
   const [campaignDesc, setCampaignDesc] = useState<IOneCampaign>();
+  const { campaignId } = useParams();
+  const location = useLocation();
+  const backlinkRef = location.state?.from ?? "/active-table/";
 
   useEffect(() => {
     const idTimeout: number = setTimeout(() => {
       setCampaignDesc(campaignDescription);
-    }, 1000);
+    }, 500);
 
     return () => {
       clearTimeout(idTimeout);
@@ -22,24 +23,25 @@ function OneCompaignTable({ campaignId }: IOneCampProps) {
   }, []);
 
   if (!campaignDesc) {
-    return null; // Or render some placeholder content
+    return null;
   }
 
-  const { name, location, products, staff, profit, operatingСosts } =
+  const { name, campLocation, products, staff, profit, operatingСosts } =
     campaignDesc;
   return (
     <div>
-      <h2>Campaigns Table</h2>
+      <BackLink to={backlinkRef}>Back to campaigns</BackLink>
+      <h2>Campaign Description Table</h2>
       <div className="table-wrapper">
         <table className="fl-table">
           <thead>
             <tr>
-              <th>campaignId</th>
-              <th>name</th>
-              <th>location</th>
-              <th>products</th>
-              <th>staff</th>
-              <th>operatingСosts</th>
+              <th>Campaign Id</th>
+              <th>Name</th>
+              <th>Location</th>
+              <th>Products</th>
+              <th>Staff</th>
+              <th>OperatingСosts</th>
               <th>profit</th>
             </tr>
           </thead>
@@ -47,7 +49,7 @@ function OneCompaignTable({ campaignId }: IOneCampProps) {
             <tr>
               <td>{campaignId}</td>
               <td>{name}</td>
-              <td>{location}</td>
+              <td>{campLocation}</td>
               <td>{products}</td>
               <td>{staff}</td>
               <td>{operatingСosts}</td>
@@ -56,7 +58,7 @@ function OneCompaignTable({ campaignId }: IOneCampProps) {
           </tbody>
         </table>
       </div>
-      {campaignDescription && <Loader />}
+      {!campaignDesc && <Loader />}
     </div>
   );
 }

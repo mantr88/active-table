@@ -3,17 +3,19 @@ import { campaignsData } from "../fakeApi";
 import { ICampaign } from "../Types/campaignTypes";
 import Loader from "../ui/Loader";
 import "../AppLoyout.css";
-import { useLocation } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import { BackLink } from "../ui/BackLink";
 import Pagination from "../ui/Pagination/Pagination";
+import getTargetId from "../helpers/getTargetId";
 
-function CompaignsTable() {
+function CampaignsTable() {
   const [campaigns, setCampaigns] = useState<ICampaign[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage] = useState(10);
   const location = useLocation();
   const backlinkRef = location.state?.from ?? "/active-table/";
-  const targetProfileId = location.state?.profileId;
+  const id = location.state?.profileId;
+  const targetProfileId = getTargetId(id, "profileId");
 
   useEffect(() => {
     const idTimeout: number = setTimeout(() => {
@@ -28,7 +30,7 @@ function CompaignsTable() {
         []
       );
       setCampaigns(campaigns);
-    }, 1000);
+    }, 500);
 
     return () => {
       clearTimeout(idTimeout);
@@ -56,12 +58,19 @@ function CompaignsTable() {
           <tbody>
             {currentRows.map((item: ICampaign): ReactElement<[]> => {
               return (
-                <tr key={item.campaignId}>
-                  <td>{item.campaignId}</td>
-                  <td>{item.clicks}</td>
-                  <td>{item.cost}</td>
-                  <td>{item.date.toDateString()}</td>
-                </tr>
+                <NavLink
+                  key={item.campaignId}
+                  className="link"
+                  to={`/active-table/${item.campaignId}`}
+                  state={{ from: location }}
+                >
+                  <tr key={item.campaignId}>
+                    <td>{item.campaignId}</td>
+                    <td>{item.clicks}</td>
+                    <td>{item.cost}</td>
+                    <td>{item.date.toDateString()}</td>
+                  </tr>
+                </NavLink>
               );
             })}
           </tbody>
@@ -78,4 +87,4 @@ function CompaignsTable() {
   );
 }
 
-export default CompaignsTable;
+export default CampaignsTable;

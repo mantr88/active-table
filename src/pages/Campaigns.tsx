@@ -1,9 +1,9 @@
-import CompaignsTable from "../components/CampaignsTable";
+import CampaignsTable from "../components/CampaignsTable";
 
 function Campaigns() {
   return (
     <div>
-      <CompaignsTable />
+      <CampaignsTable />
     </div>
   );
 }

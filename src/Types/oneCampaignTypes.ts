@@ -1,6 +1,6 @@
 export interface IOneCampaign {
   name: string;
-  location: string;
+  campLocation: string;
   products: string;
   staff: number;
   profit: number;

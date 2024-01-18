@@ -36,7 +36,7 @@ const campaignsData: ICampaign[] = Array.from({ length: 30000 }, (_, i) => ({
 
 const campaignDescription: IOneCampaign = {
   name: randomStringForGivenLength(12),
-  location: randomStringForGivenLength(12),
+  campLocation: randomStringForGivenLength(12),
   products: randomStringForGivenLength(12),
   staff: Math.floor(Math.random() * 10000),
   profit: Math.floor(Math.random() * 1000000),
