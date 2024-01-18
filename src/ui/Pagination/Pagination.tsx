@@ -1,27 +1,85 @@
 import "./Pagination.css";
 
 interface IProps {
-  clickHandler: () => void;
   rowsPerPage: number;
   totalRows: number;
+  paginate: (arg: number) => void;
+  currentPage: number;
 }
-function Pagination({ clickHandler, rowsPerPage, totalRows }: IProps) {
+function Pagination({ rowsPerPage, totalRows, currentPage, paginate }: IProps) {
   const pageNumbers = [];
   const totalPages = Math.ceil(totalRows / rowsPerPage);
 
-  for (let i = 0; i < totalPages; i++) {
+  const startPage = Math.max(currentPage - 2, 1);
+  const endPage = Math.min(currentPage + 3, totalPages);
+
+  for (let i = startPage; i < endPage; i++) {
     pageNumbers.push(i);
   }
+
+  const runNextPage = () => {
+    let newPage = currentPage;
+    if (currentPage < totalPages) {
+      newPage += 1;
+    }
+    paginate(newPage);
+  };
+
+  const runPervPage = () => {
+    let newPage = currentPage;
+    if (newPage > 1) {
+      newPage -= 1;
+    }
+    paginate(newPage);
+  };
+
+  const chooseBtnCls = (number: number): string => {
+    if (number === currentPage) {
+      return "btn" + " isActive";
+    }
+    return "btn";
+  };
+
+  const chooseLastBtnCls = () =>
+    totalPages === currentPage ? "btn isActive" : "btn";
 
   return (
     <div className="container">
       <div className="pagination">
         <ul className="paginationList">
-          <li>Previous</li>
-          {pageNumbers.map((number) => {
-            return <li key={number}>{number}</li>;
+          <li key="Previous" className="listItem" onClick={runPervPage}>
+            <button className="btn isActive" type="button">
+              Previous
+            </button>
+          </li>
+          {pageNumbers.map((number: number) => {
+            return (
+              <li
+                key={number}
+                className="listItem"
+                onClick={() => paginate(number)}
+              >
+                <button className={chooseBtnCls(number)} type="button">
+                  {number}
+                </button>
+              </li>
+            );
           })}
-          <li onClick={clickHandler}>Next</li>
+          <span>{"..."}</span>
+          <li
+            key={totalPages}
+            className="listItem"
+            onClick={() => paginate(totalPages)}
+          >
+            <button className={chooseLastBtnCls()} type="button">
+              {totalPages}
+            </button>
+          </li>
+          <li key="Next" className="listItem" onClick={runNextPage}>
+            <button className="btn isActive" type="button">
+              Next
+            </button>
+          </li>
         </ul>
       </div>
     </div>

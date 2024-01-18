@@ -8,7 +8,6 @@ import Pagination from "../ui/Pagination/Pagination";
 
 function AccountsTable() {
   const [accounts, setAccounts] = useState<IAccount[]>([]);
-  // const [visibleItems, setvisibleItems] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage] = useState(10);
   const location = useLocation();
@@ -22,10 +21,6 @@ function AccountsTable() {
       clearTimeout(idTimeout);
     };
   }, []);
-
-  const clickBtnLoadMoreHandler = () => {
-    setvisibleItems((pervState) => pervState + 10);
-  };
 
   const indexOfLastRow = currentPage * rowsPerPage;
   const indexOfFirstRow = indexOfLastRow - rowsPerPage;
@@ -51,6 +46,7 @@ function AccountsTable() {
                   className="link"
                   to="/active-table/profiles"
                   state={{ from: location, accountId: item.accountId }}
+                  key={item.accountId}
                 >
                   <tr key={item.accountId}>
                     <td>{item.accountId}</td>
@@ -64,13 +60,11 @@ function AccountsTable() {
           </tbody>
         </table>
         <Pagination
-          clickHandler={clickBtnLoadMoreHandler}
           rowsPerPage={rowsPerPage}
           totalRows={accounts.length}
+          paginate={setCurrentPage}
+          currentPage={currentPage}
         />
-        <button type="button" onClick={clickBtnLoadMoreHandler}>
-          Load more
-        </button>
       </div>
       {accounts.length === 0 && <Loader />}
     </div>
