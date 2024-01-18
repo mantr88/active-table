@@ -1,55 +1,64 @@
-// import { campaignsDescription } from "../fakeApi";
+import { IOneCampaign } from "../Types/oneCampaignTypes";
+import "../AppLoyout.css";
+import { useEffect, useState } from "react";
+import { campaignDescription } from "../fakeApi";
+import Loader from "../ui/Loader";
 
-// import { IOneCompaign } from "../Types/oneCompaignTypes";
-// import "../AppLoyout.css";
-// import { useEffect, useState } from "react";
+interface IOneCampProps {
+  campaignId: string;
+}
 
-// function OneCompaignTable() {
-//   const [campaignsDesc, setCampaignsDesc] = useState<IOneCompaign[]>([]);
+function OneCompaignTable({ campaignId }: IOneCampProps) {
+  const [campaignDesc, setCampaignDesc] = useState<IOneCampaign>();
 
-//   useEffect(() => {
-//     const idTimeout: number = setTimeout(() => {
-//       setCampaignsDesc(campaignsDescription);
-//     }, 1000);
+  useEffect(() => {
+    const idTimeout: number = setTimeout(() => {
+      setCampaignDesc(campaignDescription);
+    }, 1000);
 
-//     return () => {
-//       clearTimeout(idTimeout);
-//     };
-//   }, []);
+    return () => {
+      clearTimeout(idTimeout);
+    };
+  }, []);
 
-//   return (
-//     <div>
-//       <h2>Campaigns Table</h2>
-//       <div className="table-wrapper">
-//         <table className="fl-table">
-//           <thead>
-//             <tr>
-//               <th>campaignId</th>
-//               <th>name</th>
-//               <th>location</th>
-//               <th>products</th>
-//               <th>staff</th>
-//               <th>profit</th>
-//               <th>operatingСosts</th>
-//             </tr>
-//           </thead>
-//           <tbody>
-//             {campaigns.map((item: IOneCompaign): ReactElement<[]> => {
-//               return (
-//                 <tr>
-//                   <td>{item.campaignId}</td>
-//                   <td>{item.clicks}</td>
-//                   <td>{item.cost}</td>
-//                   <td>{item.date}</td>
-//                 </tr>
-//               );
-//             })}
-//           </tbody>
-//         </table>
-//       </div>
-//       {campaigns.length === 0 && <Loader />}
-//     </div>
-//   );
-// }
+  if (!campaignDesc) {
+    return null; // Or render some placeholder content
+  }
 
-// export default OneCompaignTable;
+  const { name, location, products, staff, profit, operatingСosts } =
+    campaignDesc;
+  return (
+    <div>
+      <h2>Campaigns Table</h2>
+      <div className="table-wrapper">
+        <table className="fl-table">
+          <thead>
+            <tr>
+              <th>campaignId</th>
+              <th>name</th>
+              <th>location</th>
+              <th>products</th>
+              <th>staff</th>
+              <th>operatingСosts</th>
+              <th>profit</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{campaignId}</td>
+              <td>{name}</td>
+              <td>{location}</td>
+              <td>{products}</td>
+              <td>{staff}</td>
+              <td>{operatingСosts}</td>
+              <td>{profit}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      {campaignDescription && <Loader />}
+    </div>
+  );
+}
+
+export default OneCompaignTable;

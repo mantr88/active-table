@@ -5,9 +5,12 @@ import Loader from "../ui/Loader";
 import "../AppLoyout.css";
 import { useLocation } from "react-router-dom";
 import { BackLink } from "../ui/BackLink";
+import Pagination from "../ui/Pagination/Pagination";
 
 function CompaignsTable() {
   const [campaigns, setCampaigns] = useState<ICampaign[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [rowsPerPage] = useState(10);
   const location = useLocation();
   const backlinkRef = location.state?.from ?? "/active-table/";
   const targetProfileId = location.state?.profileId;
@@ -32,6 +35,10 @@ function CompaignsTable() {
     };
   }, [targetProfileId]);
 
+  const indexOfLastRow = currentPage * rowsPerPage;
+  const indexOfFirstRow = indexOfLastRow - rowsPerPage;
+  const currentRows = campaigns.slice(indexOfFirstRow, indexOfLastRow);
+
   return (
     <div>
       <BackLink to={backlinkRef}>Back to profiles</BackLink>
@@ -47,7 +54,7 @@ function CompaignsTable() {
             </tr>
           </thead>
           <tbody>
-            {campaigns.map((item: ICampaign): ReactElement<[]> => {
+            {currentRows.map((item: ICampaign): ReactElement<[]> => {
               return (
                 <tr key={item.campaignId}>
                   <td>{item.campaignId}</td>
@@ -60,6 +67,12 @@ function CompaignsTable() {
           </tbody>
         </table>
       </div>
+      <Pagination
+        rowsPerPage={rowsPerPage}
+        totalRows={campaigns.length}
+        paginate={setCurrentPage}
+        currentPage={currentPage}
+      />
       {campaigns.length === 0 && <Loader />}
     </div>
   );

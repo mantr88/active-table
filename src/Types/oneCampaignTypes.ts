@@ -1,5 +1,4 @@
-export interface IOneCompaign {
-  campaignId: string;
+export interface IOneCampaign {
   name: string;
   location: string;
   products: string;

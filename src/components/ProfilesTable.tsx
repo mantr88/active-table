@@ -5,9 +5,12 @@ import { IProfile } from "../Types/profileTypes";
 import Loader from "../ui/Loader";
 import "../AppLoyout.css";
 import { BackLink } from "../ui/BackLink";
+import Pagination from "../ui/Pagination/Pagination";
 
 function ProfilesTable() {
   const [profiles, setProfiles] = useState<IProfile[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [rowsPerPage] = useState(10);
   const location = useLocation();
   const backlinkRef = location.state?.from ?? "/active-table/";
   const targetAccountId = location.state?.accountId;
@@ -32,6 +35,10 @@ function ProfilesTable() {
     };
   }, [targetAccountId]);
 
+  const indexOfLastRow = currentPage * rowsPerPage;
+  const indexOfFirstRow = indexOfLastRow - rowsPerPage;
+  const currentRows = profiles.slice(indexOfFirstRow, indexOfLastRow);
+
   return (
     <div>
       <BackLink to={backlinkRef}>Back to accounts</BackLink>
@@ -47,9 +54,10 @@ function ProfilesTable() {
           </thead>
           <tbody>
             {profiles.length !== 0 &&
-              profiles.map((item: IProfile): ReactElement<[]> => {
+              currentRows.map((item: IProfile): ReactElement<[]> => {
                 return (
                   <NavLink
+                    key={item.profileId}
                     className="link"
                     to="/active-table/campaigns"
                     state={{ location, profileId: item.profileId }}
@@ -65,6 +73,12 @@ function ProfilesTable() {
           </tbody>
         </table>
       </div>
+      <Pagination
+        rowsPerPage={rowsPerPage}
+        totalRows={profiles.length}
+        paginate={setCurrentPage}
+        currentPage={currentPage}
+      />
       {profiles.length === 0 && <Loader />}
     </div>
   );
