@@ -2,16 +2,27 @@ import { ReactElement, useEffect, useRef, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { profilesData } from "../fakeApi";
 import { IProfile } from "../Types/profileTypes";
-import Loader from "../ui/Loader";
-import "../AppLoyout.css";
-import { BackLink } from "../ui/BackLink";
+import Loader from "../ui/Loader/Loader";
+import { BackLink } from "../ui/BackLink/BackLink";
 import Pagination from "../ui/Pagination/Pagination";
 import getTargetId from "../helpers/getTargetId";
+import { SortConfig } from "../Types/SortConfig";
+import Filter from "../ui/Filter/Filter";
+import TableHead from "../ui/TableHead/TableHead";
+import { sortedData } from "../helpers/sortedData";
+import { cssClassTHeadType } from "../Types/cssClassTHeadType";
+import "../AppLoyout.css";
 
 function ProfilesTable() {
   const [profiles, setProfiles] = useState<IProfile[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage] = useState(10);
+  const [filter, setFilter] = useState("");
+  const [sortConfig, setSortConfig] = useState<SortConfig<IProfile>>({
+    key: "profileId",
+    direction: "ascending",
+  });
+
   const location = useLocation();
   const backlinkRef = useRef(location.state?.from ?? "/active-table/");
   const id = location.state?.accountId;
@@ -37,23 +48,48 @@ function ProfilesTable() {
     };
   }, [targetAccountId]);
 
+  const clickHeadCellHandler = (key: keyof IProfile) => {
+    setSortConfig((prevState) => ({
+      key: key,
+      direction:
+        prevState.direction === "ascending" ? "descending" : "ascending",
+    }));
+  };
+  const sortedProfiles = sortedData(profiles, sortConfig);
+
+  const sortedCellsCls = (key: string): cssClassTHeadType => {
+    return sortConfig.key === key && sortConfig.direction === "ascending"
+      ? "down"
+      : sortConfig.key === key && sortConfig.direction === "descending"
+      ? "up"
+      : "default";
+  };
+
+  const filteredProfiles = sortedProfiles.filter(
+    (profile) =>
+      profile.profileId.includes(filter) ||
+      profile.country.includes(filter) ||
+      profile.marketplace.includes(filter) ||
+      profile.accountId.includes(filter)
+  );
+
   const indexOfLastRow = currentPage * rowsPerPage;
   const indexOfFirstRow = indexOfLastRow - rowsPerPage;
-  const currentRows = profiles.slice(indexOfFirstRow, indexOfLastRow);
+  const currentRows = filteredProfiles.slice(indexOfFirstRow, indexOfLastRow);
 
   return (
     <div>
-      <BackLink to={backlinkRef.current}>Back to accounts</BackLink>
       <h2>Profiles Table</h2>
+      <BackLink to={backlinkRef.current}>Back to accounts</BackLink>
+      <Filter filter={filter} setFilter={setFilter} />
       <div className="table-wrapper">
         <table className="fl-table">
-          <thead>
-            <tr>
-              <th>profileId</th>
-              <th>country</th>
-              <th>marketplace</th>
-            </tr>
-          </thead>
+          <TableHead
+            data={profiles}
+            clickHeadCellHandler={clickHeadCellHandler}
+            sortedCellsCls={sortedCellsCls}
+            skippedProp={"accountId"}
+          />
           <tbody>
             {profiles.length !== 0 &&
               currentRows.map((item: IProfile): ReactElement<[]> => {
