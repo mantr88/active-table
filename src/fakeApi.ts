@@ -21,17 +21,17 @@ const accountsData: IAccount[] = Array.from({ length: 100 }, (_, i) => ({
 
 const profilesData: IProfile[] = Array.from({ length: 5000 }, (_, i) => ({
   profileId: `prof${i + 1}`,
-  country: `Country ${(i % 50) + 1}`,
-  marketplace: `Marketplace ${Math.floor(i / 50) + 1}`,
+  country: `Country ${(i % 10) + 1}`,
+  marketplace: `Marketplace ${Math.floor(i / 10) + 1}`,
   accountId: `acc${Math.floor(i / 50) + 1}`,
 }));
 
-const campaignsData: ICampaign[] = Array.from({ length: 30000 }, (_, i) => ({
+const campaignsData: ICampaign[] = Array.from({ length: 50000 }, (_, i) => ({
   campaignId: `camp${i + 1}`,
-  clicks: Math.floor(Math.random() * 300),
-  cost: Math.floor(Math.random() * 3000),
+  clicks: Math.floor(Math.random() * 100),
+  cost: Math.floor(Math.random() * 1000),
   date: new Date(),
-  profileId: `prof${Math.floor(i / 30) + 1}`,
+  profileId: `prof${Math.floor(i / 10) + 1}`,
 }));
 
 const campaignDescription: IOneCampaign = {

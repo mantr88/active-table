@@ -8,6 +8,8 @@ import Pagination from "../ui/Pagination/Pagination";
 
 type SortDirection = "ascending" | "descending";
 
+type CssClassType = "up" | "default" | "down";
+
 interface SortConfig {
   key: keyof IAccount;
   direction: SortDirection;
@@ -17,7 +19,6 @@ function AccountsTable() {
   const [accounts, setAccounts] = useState<IAccount[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage] = useState(10);
-  const [isSorted, setIsSorted] = useState("");
   const [filter, setFilter] = useState("");
   const [sortConfig, setSortConfig] = useState<SortConfig>({
     key: "accountId",
@@ -35,20 +36,13 @@ function AccountsTable() {
     };
   }, []);
 
-  const clickHeadCellHandler: React.MouseEventHandler<HTMLTableCellElement> = (
-    evt: React.MouseEvent<HTMLTableCellElement>
-  ) => {
-    const target = evt.target as HTMLElement;
-    setIsSorted(target.innerHTML);
-    setSortConfig((pervState) => {
-      return {
-        key: "accountId",
-        direction:
-          pervState.direction === "ascending" ? "descending" : "ascending",
-      };
-    });
+  const clickHeadCellHandler = (key: keyof IAccount) => {
+    setSortConfig((prevState) => ({
+      key: key,
+      direction:
+        prevState.direction === "ascending" ? "descending" : "ascending",
+    }));
   };
-
   const sortedAccounts = accounts.slice().sort((a, b) => {
     if (a[sortConfig.key] < b[sortConfig.key]) {
       return sortConfig.direction === "ascending" ? -1 : 1;
@@ -59,12 +53,13 @@ function AccountsTable() {
     return 0;
   });
 
-  const sortedCellscls =
-    isSorted === sortConfig.key && sortConfig.direction === "ascending"
-      ? "down"
-      : isSorted === sortConfig.key && sortConfig.direction === "descending"
+  const sortedCellscls = (key: keyof IAccount): CssClassType => {
+    return sortConfig.key === key && sortConfig.direction === "ascending"
       ? "up"
+      : sortConfig.key === key && sortConfig.direction === "descending"
+      ? "down"
       : "default";
+  };
 
   const filteredAccounts = sortedAccounts.filter(
     (account) =>
@@ -96,14 +91,23 @@ function AccountsTable() {
         <table className="fl-table">
           <thead>
             <tr>
-              <th className={sortedCellscls} onClick={clickHeadCellHandler}>
+              <th
+                className={sortedCellscls("accountId")}
+                onClick={() => clickHeadCellHandler("accountId")}
+              >
                 accountId
               </th>
-              <th className={sortedCellscls} onClick={clickHeadCellHandler}>
+              <th
+                className={sortedCellscls("authToken")}
+                onClick={() => clickHeadCellHandler("authToken")}
+              >
                 authToken
               </th>
               <th>email</th>
-              <th className={sortedCellscls} onClick={clickHeadCellHandler}>
+              <th
+                className={sortedCellscls("creationDate")}
+                onClick={() => clickHeadCellHandler("creationDate")}
+              >
                 creationDate
               </th>
             </tr>
