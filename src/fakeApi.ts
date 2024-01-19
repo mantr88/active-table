@@ -14,8 +14,8 @@ const randomStringForGivenLength = (length = 10) => {
 
 const accountsData: IAccount[] = Array.from({ length: 100 }, (_, i) => ({
   accountId: `acc${i + 1}`,
-  email: `email${i + 1}@example.com`,
   authToken: `token${i + 1}`,
+  email: `email${i + 1}@example.com`,
   creationDate: new Date(),
 }));
 

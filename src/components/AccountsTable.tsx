@@ -5,10 +5,11 @@ import { IAccount } from "../Types/accountTypes";
 import Loader from "../ui/Loader";
 import "../AppLoyout.css";
 import Pagination from "../ui/Pagination/Pagination";
+import Filter from "../ui/Filter/Filter";
+import TableHead from "../ui/TableHead/TableHead";
+import { cssClassTHeadType } from "../Types/cssClassTHeadType";
 
 type SortDirection = "ascending" | "descending";
-
-type CssClassType = "up" | "default" | "down";
 
 interface SortConfig {
   key: keyof IAccount;
@@ -53,11 +54,11 @@ function AccountsTable() {
     return 0;
   });
 
-  const sortedCellscls = (key: keyof IAccount): CssClassType => {
+  const sortedCellsCls = (key: string): cssClassTHeadType => {
     return sortConfig.key === key && sortConfig.direction === "ascending"
-      ? "up"
-      : sortConfig.key === key && sortConfig.direction === "descending"
       ? "down"
+      : sortConfig.key === key && sortConfig.direction === "descending"
+      ? "up"
       : "default";
   };
 
@@ -75,61 +76,33 @@ function AccountsTable() {
   return (
     <div>
       <h2>Accounts Table</h2>
-      <div className="inputWrap">
-        <div className="inputContainer">
-          <input
-            className="input"
-            type="text"
-            value={filter}
-            onChange={(e) => setFilter(e.target.value)}
-            placeholder="Filter..."
-          />
-        </div>
-      </div>
-
+      <Filter filter={filter} setFilter={setFilter} />
       <div className="table-wrapper">
         <table className="fl-table">
-          <thead>
-            <tr>
-              <th
-                className={sortedCellscls("accountId")}
-                onClick={() => clickHeadCellHandler("accountId")}
-              >
-                accountId
-              </th>
-              <th
-                className={sortedCellscls("authToken")}
-                onClick={() => clickHeadCellHandler("authToken")}
-              >
-                authToken
-              </th>
-              <th>email</th>
-              <th
-                className={sortedCellscls("creationDate")}
-                onClick={() => clickHeadCellHandler("creationDate")}
-              >
-                creationDate
-              </th>
-            </tr>
-          </thead>
+          <TableHead
+            data={accounts}
+            clickHeadCellHandler={clickHeadCellHandler}
+            sortedCellsCls={sortedCellsCls}
+          />
           <tbody>
-            {currentRows.map((item: IAccount): ReactElement<[]> => {
-              return (
-                <NavLink
-                  className="link"
-                  to="/active-table/profiles"
-                  state={{ from: location, accountId: item.accountId }}
-                  key={item.accountId}
-                >
-                  <tr key={item.accountId}>
-                    <td>{item.accountId}</td>
-                    <td>{item.authToken}</td>
-                    <td>{item.email}</td>
-                    <td>{item.creationDate.toDateString()}</td>
-                  </tr>
-                </NavLink>
-              );
-            })}
+            {accounts.length !== 0 &&
+              currentRows.map((item: IAccount): ReactElement<[]> => {
+                return (
+                  <NavLink
+                    className="link"
+                    to="/active-table/profiles"
+                    state={{ from: location, accountId: item.accountId }}
+                    key={item.accountId}
+                  >
+                    <tr key={item.accountId}>
+                      <td>{item.accountId}</td>
+                      <td>{item.authToken}</td>
+                      <td>{item.email}</td>
+                      <td>{item.creationDate.toDateString()}</td>
+                    </tr>
+                  </NavLink>
+                );
+              })}
           </tbody>
         </table>
         <Pagination
