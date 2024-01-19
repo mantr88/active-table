@@ -8,20 +8,15 @@ import Pagination from "../ui/Pagination/Pagination";
 import Filter from "../ui/Filter/Filter";
 import TableHead from "../ui/TableHead/TableHead";
 import { cssClassTHeadType } from "../Types/cssClassTHeadType";
-
-type SortDirection = "ascending" | "descending";
-
-interface SortConfig {
-  key: keyof IAccount;
-  direction: SortDirection;
-}
+import { SortConfig } from "../Types/SortConfig";
+import { sortedData } from "../helpers/sortedData";
 
 function AccountsTable() {
   const [accounts, setAccounts] = useState<IAccount[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage] = useState(10);
   const [filter, setFilter] = useState("");
-  const [sortConfig, setSortConfig] = useState<SortConfig>({
+  const [sortConfig, setSortConfig] = useState<SortConfig<IAccount>>({
     key: "accountId",
     direction: "ascending",
   });
@@ -44,15 +39,7 @@ function AccountsTable() {
         prevState.direction === "ascending" ? "descending" : "ascending",
     }));
   };
-  const sortedAccounts = accounts.slice().sort((a, b) => {
-    if (a[sortConfig.key] < b[sortConfig.key]) {
-      return sortConfig.direction === "ascending" ? -1 : 1;
-    }
-    if (a[sortConfig.key] > b[sortConfig.key]) {
-      return sortConfig.direction === "descending" ? 1 : -1;
-    }
-    return 0;
-  });
+  const sortedAccounts = sortedData(accounts, sortConfig);
 
   const sortedCellsCls = (key: string): cssClassTHeadType => {
     return sortConfig.key === key && sortConfig.direction === "ascending"

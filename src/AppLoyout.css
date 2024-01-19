@@ -84,13 +84,13 @@ h2 {
 }
 
 .fl-table thead th.up {
-  background-image: url("./images/up_arrow.png");
+  background-image: url("../public/images/up_arrow.png");
 }
 .fl-table thead th.down {
-  background-image: url("./images/down_arrow.png");
+  background-image: url("../public/images/down_arrow.png");
 }
 .fl-table thead th.default {
-  background-image: url("./images/default.png");
+  background-image: url("../public/images/default.png");
 }
 .fl-table thead th.up,
 .fl-table thead th.default,
