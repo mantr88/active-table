@@ -1,9 +1,8 @@
 .container {
   height: 100%;
+  max-width: 100%;
   margin: 0;
   padding: 0;
-  color: #222;
-  max-width: 940px;
   margin: 0 auto;
   position: relative;
   text-align: center;
@@ -18,13 +17,6 @@
   margin: 0;
   padding: 0;
   list-style-type: none;
-
-  li:first-of-type,
-  li:last-of-type {
-    background-color: rgb(91, 142, 197);
-    color: #fff;
-    font-weight: bold;
-  }
 }
 
 .listItem {
@@ -40,7 +32,7 @@
 }
 
 .isActive {
-  background-color: rgb(91, 142, 197);
+  background-color: #324960;
   color: #fff;
   font-weight: bold;
 }

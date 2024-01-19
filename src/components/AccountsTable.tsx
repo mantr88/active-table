@@ -2,14 +2,14 @@ import { ReactElement, useEffect, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { accountsData } from "../fakeApi";
 import { IAccount } from "../Types/accountTypes";
-import Loader from "../ui/Loader";
-import "../AppLoyout.css";
+import Loader from "../ui/Loader/Loader";
 import Pagination from "../ui/Pagination/Pagination";
 import Filter from "../ui/Filter/Filter";
 import TableHead from "../ui/TableHead/TableHead";
 import { cssClassTHeadType } from "../Types/cssClassTHeadType";
 import { SortConfig } from "../Types/SortConfig";
 import { sortedData } from "../helpers/sortedData";
+import "../AppLoyout.css";
 
 function AccountsTable() {
   const [accounts, setAccounts] = useState<IAccount[]>([]);
@@ -40,6 +40,7 @@ function AccountsTable() {
     }));
   };
   const sortedAccounts = sortedData(accounts, sortConfig);
+  console.log("🪲 ~ AccountsTable ~ accounts:", accounts);
 
   const sortedCellsCls = (key: string): cssClassTHeadType => {
     return sortConfig.key === key && sortConfig.direction === "ascending"
@@ -70,6 +71,7 @@ function AccountsTable() {
             data={accounts}
             clickHeadCellHandler={clickHeadCellHandler}
             sortedCellsCls={sortedCellsCls}
+            skippedProp=""
           />
           <tbody>
             {accounts.length !== 0 &&
@@ -92,6 +94,7 @@ function AccountsTable() {
               })}
           </tbody>
         </table>
+        {accounts.length === 0 && <Loader />}
         <Pagination
           rowsPerPage={rowsPerPage}
           totalRows={accounts.length}
@@ -99,7 +102,6 @@ function AccountsTable() {
           currentPage={currentPage}
         />
       </div>
-      {accounts.length === 0 && <Loader />}
     </div>
   );
 }

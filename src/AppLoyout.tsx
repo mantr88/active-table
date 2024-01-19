@@ -1,17 +1,12 @@
 import "./AppLoyout.css";
-import { Link, Outlet } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 
-function App() {
+function AppLoyout() {
   return (
     <div className="container">
-      <nav>
-        <Link to="/active-table/">Accounts</Link>
-        <Link to="/active-table/profiles">Profiles</Link>
-        <Link to="/active-table/campaigns">Campaigns</Link>
-      </nav>
       <Outlet />
     </div>
   );
 }
 
-export default App;
+export default AppLoyout;

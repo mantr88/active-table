@@ -1,16 +1,16 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import App from "./AppLoyout.tsx";
-import "./index.css";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import AppLoyout from "./AppLoyout.tsx";
 import Accounts from "./pages/Accounts.tsx";
 import Profiles from "./pages/Profiles.tsx";
 import Campaigns from "./pages/Campaigns.tsx";
 import OneCampaign from "./pages/OneCampaign.tsx";
+import "./index.css";
 
 const router = createBrowserRouter([
   {
-    element: <App />,
+    element: <AppLoyout />,
     children: [
       {
         index: true,

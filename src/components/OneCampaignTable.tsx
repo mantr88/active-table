@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import { IOneCampaign } from "../Types/oneCampaignTypes";
 import { campaignDescription } from "../fakeApi";
-import Loader from "../ui/Loader";
+import Loader from "../ui/Loader/Loader";
 import "../AppLoyout.css";
-import { BackLink } from "../ui/BackLink";
+import { BackLink } from "../ui/BackLink/BackLink";
 
 function OneCompaignTable() {
   const [campaignDesc, setCampaignDesc] = useState<IOneCampaign>();

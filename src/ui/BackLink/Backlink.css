@@ -1,0 +1,22 @@
+.backLinkWrap {
+  text-align: start;
+}
+
+.backLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: 30px;
+  padding: 8px 8px;
+  text-decoration: none;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: #fff;
+
+  background-color: #324960;
+  border-radius: 12px;
+
+  &:hover {
+    color: #4fc3a1;
+  }
+}
