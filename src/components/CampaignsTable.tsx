@@ -23,7 +23,7 @@ function CampaignsTable() {
     direction: "ascending",
   });
   const location = useLocation();
-  const backlinkRef = location.state?.from ?? "/active-table/";
+  const backlinkRef = "/active-table/profiles";
   const id = location.state?.profileId;
   const targetProfileId = getTargetId(id, "profileId");
 
