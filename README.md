@@ -1,30 +1,9 @@
-# React + TypeScript + Vite
+<h1 style="text-align:center" > Active tables</h1>
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+![Table on the blue background](<Знімок екрана 2024-01-19 о 23.59.12.png>)
 
-Currently, two official plugins are available:
+<p>Active Tables is a web web application with the following hierarchical structure of pages (tables): Accounts => Profiles => Campaigns, which renders tables obtained from a fake API that simulates the backend. </p>
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+<p>On the table page, we have the table name, a filter and pagination buttons. On the pages of the second nest and deeper, there is also a "Back to" button, clicking on which allows you to return to the previous page. Tables have a sorting function, when you click on the top row of the corresponding column, sorting occurs by ascending or descending, which is indicated by the triangular indicator on the right side of the corresponding row. When you click on one of the lines, the transition to the selected entity is made according to the structure. The filter allows you to filter the contents of the table according to the entered characters</p>
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
-
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+<p>During the creation of this project, the following technologies were used: Typescript, React, Vite</p>
